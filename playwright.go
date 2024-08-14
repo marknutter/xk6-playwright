@@ -96,6 +96,13 @@ func (p *Playwright) Kill() {
 //---------------------------------------------------------------------
 
 // Goto wrapper around playwright goto page function that takes in a url and a set of options
+func (p *Playwright) FrameLocator(selector string) {
+	if _, err := p.Page.frameLocator(selector); err != nil {
+		log.Fatalf("could not locate frame: %v", err)
+	}
+}
+
+// Goto wrapper around playwright goto page function that takes in a url and a set of options
 func (p *Playwright) Goto(url string, opts playwright.PageGotoOptions) {
 	if _, err := p.Page.Goto(url, opts); err != nil {
 		log.Fatalf("could not goto: %v", err)
