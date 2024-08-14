@@ -96,8 +96,10 @@ func (p *Playwright) Kill() {
 //---------------------------------------------------------------------
 
 // FrameLocator is a wrapper around the playwright FrameLocator function that takes in a selector
-func (p *Playwright) FrameLocator(selector string) {
-	p.Page.FrameLocator(selector)
+func (p *Playwright) FrameLocator(selector string) playwright.FrameLocator {
+    // Assuming p.Page is of type playwright.Page and accessible
+    locator := p.Page.Locator(selector)
+    return locator.FrameLocator()
 }
 
 // Goto wrapper around playwright goto page function that takes in a url and a set of options
