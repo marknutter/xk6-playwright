@@ -96,7 +96,7 @@ func (p *Playwright) Kill() {
 //---------------------------------------------------------------------
 
 // FrameLocator is a wrapper around the playwright FrameLocator function that takes in a selector
-func (p *Playwright) FrameLocator(selector string) playwright.FrameLocator {
+func (p *Playwright) FrameLocator(selector string) {
 	frameLocator := p.FrameLocator(selector)
 	return frameLocator
 }
