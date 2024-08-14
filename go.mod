@@ -3,7 +3,7 @@ module github.com/marknutter/xk6-playwright
 go 1.20
 
 require (
-	github.com/playwright-community/playwright-go v0.2000.1
+	github.com/playwright-community/playwright-go v0.4501.1
 	go.k6.io/k6 v0.51.1-0.20240610082146-1f01a9bc2365
 )
 

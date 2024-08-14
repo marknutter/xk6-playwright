@@ -96,16 +96,8 @@ func (p *Playwright) Kill() {
 //---------------------------------------------------------------------
 
 // FrameLocator is a wrapper around the playwright FrameLocator function that takes in a selector
-func (p *Playwright) FrameLocator(selector string) playwright.Locator {
-    // Retrieve the Locator
-    locator, err := p.Page.Locator(selector)
-    if err != nil {
-        log.Fatalf("could not locate element: %v", err)
-    }
-
-    // Use FrameLocator on the obtained Locator
-    frameLocator := locator.FrameLocator()
-    return frameLocator
+func (p *Playwright) FrameLocator(selector string) (playwright.FrameLocator) {
+	return p.Page.FrameLocator(selector)
 }
 
 // Goto wrapper around playwright goto page function that takes in a url and a set of options
@@ -168,14 +160,14 @@ func (p *Playwright) Focus(selector string, opts playwright.PageFocusOptions) {
 }
 
 // Fill wrapper around playwright fill page function that takes in a selector, text, and a set of options
-func (p *Playwright) Fill(selector string, filledString string, opts playwright.FrameFillOptions) {
-	if err := p.Page.Fill(selector, filledString, opts); err != nil {
-		log.Fatalf("error with fill: %v", err)
-	}
+func (p *Playwright) Fill(selector string, filledString string, opts playwright.PageFillOptions) {
+    if err := p.Page.Fill(selector, filledString, opts); err != nil {
+        log.Fatalf("error with fill: %v", err)
+    }
 }
 
 // SelectOptions wrapper around playwright selectOptions page function that takes in a selector, values, and a set of options
-func (p *Playwright) SelectOptions(selector string, values playwright.SelectOptionValues, opts playwright.FrameSelectOptionOptions) {
+func (p *Playwright) SelectOptions(selector string, values playwright.SelectOptionValues, opts playwright.PageSelectOptionOptions) {
 	_, err := p.Page.SelectOption(selector, values, opts)
 	if err != nil {
 		log.Fatalf("error selecting the option: %v", err)
@@ -183,29 +175,29 @@ func (p *Playwright) SelectOptions(selector string, values playwright.SelectOpti
 }
 
 // Check wrapper around playwright check page function that takes in a selector and a set of options
-func (p *Playwright) Check(selector string, opts playwright.FrameCheckOptions) {
+func (p *Playwright) Check(selector string, opts playwright.PageCheckOptions) {
 	if err := p.Page.Check(selector, opts); err != nil {
 		log.Fatalf("error with checking the field: %v", err)
 	}
 }
 
 // Uncheck wrapper around playwright uncheck page function that takes in a selector and a set of options
-func (p *Playwright) Uncheck(selector string, opts playwright.FrameUncheckOptions) {
+func (p *Playwright) Uncheck(selector string, opts playwright.PageUncheckOptions) {
 	if err := p.Page.Uncheck(selector, opts); err != nil {
 		log.Fatalf("error with unchecking the field: %v", err)
 	}
 }
 
 // DragAndDrop wrapper around playwright draganddrop page function that takes in two selectors(source and target) and a set of options
-func (p *Playwright) DragAndDrop(sourceSelector string, targetSelector string, opts playwright.FrameDragAndDropOptions) {
+func (p *Playwright) DragAndDrop(sourceSelector string, targetSelector string, opts playwright.PageDragAndDropOptions) {
 	if err := p.Page.DragAndDrop(sourceSelector, targetSelector, opts); err != nil {
 		log.Fatalf("error with drag and drop: %v", err)
 	}
 }
 
 // Evaluate wrapper around playwright evaluate page function that takes in an expresion and a set of options and evaluates the expression/function returning the resulting information.
-func (p *Playwright) Evaluate(expression string, opts playwright.PageEvaluateOptions) interface{} {
-	returnedValue, err := p.Page.Evaluate(expression, opts)
+func (p *Playwright) Evaluate(expression string) interface{} {
+	returnedValue, err := p.Page.Evaluate(expression)
 	if err != nil {
 		log.Fatalf("error evaluating the expression: %v", err)
 	}
@@ -259,14 +251,14 @@ func (p *Playwright) FirstInputDelay() uint64 {
 	return gjson.Get(entriesToString, "0.processingStart").Uint() - gjson.Get(entriesToString, "0.startTime").Uint() // https://web.dev/fid/  for calc
 }
 
-// Cookies wrapper around playwright cookies fetch function
-func (p *Playwright) Cookies() []*playwright.BrowserContextCookiesResult {
-	cookies, err := p.cookies()
-	if err != nil {
-		log.Fatalf("error with getting the cookies: %v", err)
-	}
-	return cookies
-}
+// // Cookies wrapper around playwright cookies fetch function
+// func (p *Playwright) Cookies() []*playwright.BrowserContextCookiesResult {
+// 	cookies, err := p.cookies()
+// 	if err != nil {
+// 		log.Fatalf("error with getting the cookies: %v", err)
+// 	}
+// 	return cookies
+// }
 
 //---------------------------------------------------------------------
 //                         Helpers
@@ -294,13 +286,13 @@ func (p *Playwright) closeBrowser() error {
 	return errors.New("no browser or browser context attached")
 }
 
-// cookies returns the cookies from the browser context or from browser persistent context
-func (p *Playwright) cookies() ([]*playwright.BrowserContextCookiesResult, error) {
-	if p.Browser != nil && len(p.Browser.Contexts()) > 0 {
-		return p.Browser.Contexts()[0].Cookies()
-	}
-	if p.BrowserContext != nil {
-		return p.BrowserContext.Cookies()
-	}
-	return nil, errors.New("no browser or browser context attached")
-}
+// // cookies returns the cookies from the browser context or from browser persistent context
+// func (p *Playwright) cookies() ([]*playwright.BrowserContextCookiesResult, error) {
+// 	if p.Browser != nil && len(p.Browser.Contexts()) > 0 {
+// 		return p.Browser.Contexts()[0].Cookies()
+// 	}
+// 	if p.BrowserContext != nil {
+// 		return p.BrowserContext.Cookies()
+// 	}
+// 	return nil, errors.New("no browser or browser context attached")
+// }
