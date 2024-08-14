@@ -97,7 +97,7 @@ func (p *Playwright) Kill() {
 
 // FrameLocator is a wrapper around the playwright FrameLocator function that takes in a selector
 func (p *Playwright) FrameLocator(selector string) {
-	p.FrameLocator(selector)
+	p.Page.FrameLocator(selector)
 }
 
 // Goto wrapper around playwright goto page function that takes in a url and a set of options
